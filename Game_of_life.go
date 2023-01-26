@@ -7,6 +7,7 @@ import (
 
 func main() {
 
+	fmt.Println("Insert dimension and seed of the universe:")
 	var dimension int
 	var seed int64
 	fmt.Scan(&dimension, &seed)
