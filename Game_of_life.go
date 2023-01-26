@@ -9,10 +9,10 @@ func main() {
 
 	fmt.Println("Insert dimension and seed of the universe:")
 	var dimension int
-	var seed int64
+	var seed int
 	fmt.Scan(&dimension, &seed)
 
-	rand.Seed(seed)
+	rand.Seed(int64(seed))
 
 	universe := make([][]int, dimension)
 	for element := range universe {
