@@ -5,12 +5,14 @@ import (
 	"math/rand"
 )
 
+var dimension int
+var seed int
+var generations int
+
 func main() {
 
 	fmt.Println("Insert dimension and seed of the universe:")
-	var dimension int
-	var seed int
-	fmt.Scan(&dimension, &seed)
+	fmt.Scan(&dimension, &seed, &generations)
 
 	rand.Seed(int64(seed))
 
