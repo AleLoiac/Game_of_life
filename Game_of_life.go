@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 )
 
@@ -63,7 +64,10 @@ func printUniverse(universe [][]int) {
 func main() {
 
 	fmt.Println("Insert dimension and seed of the universe:")
-	fmt.Scan(&dimension, &seed, &generations)
+	_, err := fmt.Scan(&dimension, &seed, &generations)
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
 	rand.Seed(int64(seed))
 
 	currentUniverse := make([][]int, dimension)
