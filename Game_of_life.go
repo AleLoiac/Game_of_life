@@ -9,15 +9,6 @@ var dimension int
 var seed int
 var generations int
 
-func outOfBorder(x int) int {
-	if x == -1 {
-		x = dimension - 1
-	} else if x == dimension {
-		x = 0
-	}
-	return x
-}
-
 func createUniverse(universe [][]int) {
 	for i := 0; i < dimension; i++ {
 		for j := 0; j < dimension; j++ {
@@ -31,6 +22,28 @@ func createUniverse(universe [][]int) {
 		}
 		//fmt.Println()
 	}
+}
+
+func countNeighbors(universe [][]int, i int, j int) int {
+	count := 0
+	for x := i - 1; x <= i+1; x++ {
+		for y := j - 1; y <= j+1; y++ {
+			if x == i && y == j {
+				continue
+			}
+			count += universe[outOfBorder(x)][outOfBorder(y)]
+		}
+	}
+	return count
+}
+
+func outOfBorder(x int) int {
+	if x == -1 {
+		x = dimension - 1
+	} else if x == dimension {
+		x = 0
+	}
+	return x
 }
 
 func printUniverse(universe [][]int) {
@@ -58,11 +71,6 @@ func main() {
 		currentUniverse[element] = make([]int, dimension)
 	}
 
-	//nextUniverse := make([][]int, dimension)
-	//for element := range nextUniverse {
-	//	nextUniverse[element] = make([]int, dimension)
-	//}
-
 	createUniverse(currentUniverse)
 
 	for x := 1; x <= generations; x++ {
@@ -73,16 +81,14 @@ func main() {
 		for i := 0; i < dimension; i++ {
 			for j := 0; j < dimension; j++ {
 				if currentUniverse[i][j] == 1 {
-					count := currentUniverse[i][outOfBorder(j-1)] + currentUniverse[i][outOfBorder(j+1)] + currentUniverse[outOfBorder(i-1)][outOfBorder(j-1)] + currentUniverse[outOfBorder(i-1)][j] + currentUniverse[outOfBorder(i-1)][outOfBorder(j+1)] + currentUniverse[outOfBorder(i+1)][outOfBorder(j-1)] + currentUniverse[outOfBorder(i+1)][j] + currentUniverse[outOfBorder(i+1)][outOfBorder(j+1)]
+					count := countNeighbors(currentUniverse, i, j)
 					if count > 3 || count < 2 {
 						nextUniverse[i][j] = 0
-						//fmt.Print(" ")
 					} else {
 						nextUniverse[i][j] = 1
-						//fmt.Print("O")
 					}
 				} else if currentUniverse[i][j] == 0 {
-					count := currentUniverse[i][outOfBorder(j-1)] + currentUniverse[i][outOfBorder(j+1)] + currentUniverse[outOfBorder(i-1)][outOfBorder(j-1)] + currentUniverse[outOfBorder(i-1)][j] + currentUniverse[outOfBorder(i-1)][outOfBorder(j+1)] + currentUniverse[outOfBorder(i+1)][outOfBorder(j-1)] + currentUniverse[outOfBorder(i+1)][j] + currentUniverse[outOfBorder(i+1)][outOfBorder(j+1)]
+					count := countNeighbors(currentUniverse, i, j)
 					if count == 3 {
 						nextUniverse[i][j] = 1
 					}
@@ -90,15 +96,7 @@ func main() {
 			}
 			//fmt.Println()
 		}
-		//printUniverse(currentUniverse)
-		//fmt.Println("--------")
-		//printUniverse(nextUniverse)
-		//fmt.Println("--------")
 		currentUniverse = nextUniverse
-		//printUniverse(currentUniverse)
-		//fmt.Println("--------")
-		//printUniverse(nextUniverse)
-		//fmt.Println("--------")
 	}
 	printUniverse(currentUniverse)
 }
