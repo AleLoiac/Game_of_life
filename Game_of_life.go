@@ -7,8 +7,9 @@ import (
 )
 
 var dimension int
-var seed int
-var generations int
+
+// var seed int
+var generations int = 10
 
 func createUniverse(universe [][]int) {
 	for i := 0; i < dimension; i++ {
@@ -61,14 +62,26 @@ func printUniverse(universe [][]int) {
 	}
 }
 
+func countAlive(universe [][]int) int {
+	count := 0
+	for i := 0; i < dimension; i++ {
+		for j := 0; j < dimension; j++ {
+			if universe[i][j] == 1 {
+				count++
+			}
+		}
+	}
+	return count
+}
+
 func main() {
 
-	fmt.Println("Insert dimension and seed of the universe:")
-	_, err := fmt.Scan(&dimension, &seed, &generations)
+	fmt.Println("Insert dimension of the universe:")
+	_, err := fmt.Scan(&dimension /*, &seed, &generations*/)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	rand.Seed(int64(seed))
+	//rand.Seed(int64(seed))
 
 	currentUniverse := make([][]int, dimension)
 	for element := range currentUniverse {
@@ -78,6 +91,8 @@ func main() {
 	createUniverse(currentUniverse)
 
 	for x := 1; x <= generations; x++ {
+		fmt.Printf("Generation #%v\n", x)
+		//initialize temporary universe
 		nextUniverse := make([][]int, dimension)
 		for element := range nextUniverse {
 			nextUniverse[element] = make([]int, dimension)
@@ -100,7 +115,10 @@ func main() {
 			}
 			//fmt.Println()
 		}
+		fmt.Printf("Alive: %v\n", countAlive(nextUniverse))
 		currentUniverse = nextUniverse
+		printUniverse(currentUniverse)
+
 	}
-	printUniverse(currentUniverse)
+	//printUniverse(currentUniverse)
 }
