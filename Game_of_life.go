@@ -88,50 +88,18 @@ func nextGeneration(current [][]int) [][]int {
 }
 
 func main() {
-
 	fmt.Println("Insert dimension of the universe:")
-	_, err := fmt.Scan(&dimension /*, &seed, &generations*/)
+	_, err := fmt.Scan(&dimension)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	//rand.Seed(int64(seed))
 
-	currentUniverse := make([][]int, dimension)
-	for element := range currentUniverse {
-		currentUniverse[element] = make([]int, dimension)
-	}
+	currentUniverse := createUniverse(dimension)
 
-	createUniverse(dimension)
-
-	for x := 1; x <= generations; x++ {
-		fmt.Printf("Generation #%v\n", x)
-		//initialize temporary universe
-		nextUniverse := make([][]int, dimension)
-		for element := range nextUniverse {
-			nextUniverse[element] = make([]int, dimension)
-		}
-		for i := 0; i < dimension; i++ {
-			for j := 0; j < dimension; j++ {
-				if currentUniverse[i][j] == 1 {
-					count := countNeighbors(currentUniverse, i, j)
-					if count > 3 || count < 2 {
-						nextUniverse[i][j] = 0
-					} else {
-						nextUniverse[i][j] = 1
-					}
-				} else if currentUniverse[i][j] == 0 {
-					count := countNeighbors(currentUniverse, i, j)
-					if count == 3 {
-						nextUniverse[i][j] = 1
-					}
-				}
-			}
-			//fmt.Println()
-		}
-		fmt.Printf("Alive: %v\n", countAlive(nextUniverse))
-		currentUniverse = nextUniverse
+	for gen := 1; gen <= generations; gen++ {
+		fmt.Printf("Generation #%d\n", gen)
+		fmt.Printf("Alive: %d\n", countAlive(currentUniverse))
 		printUniverse(currentUniverse)
-
+		currentUniverse = nextGeneration(currentUniverse)
 	}
-	//printUniverse(currentUniverse)
 }
