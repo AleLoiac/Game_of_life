@@ -7,23 +7,17 @@ import (
 )
 
 var dimension int
-
-// var seed int
 var generations int = 10
 
-func createUniverse(universe [][]int) {
-	for i := 0; i < dimension; i++ {
-		for j := 0; j < dimension; j++ {
-			x := rand.Intn(2)
-			universe[i][j] = x
-			if x == 0 {
-				//fmt.Print(" ")
-			} else {
-				//fmt.Print("O")
-			}
+func createUniverse(dimension int) [][]int {
+	universe := make([][]int, dimension)
+	for i := range universe {
+		universe[i] = make([]int, dimension)
+		for j := range universe[i] {
+			universe[i][j] = rand.Intn(2) // Random 0 or 1
 		}
-		//fmt.Println()
 	}
+	return universe
 }
 
 func countNeighbors(universe [][]int, i int, j int) int {
@@ -88,7 +82,7 @@ func main() {
 		currentUniverse[element] = make([]int, dimension)
 	}
 
-	createUniverse(currentUniverse)
+	createUniverse(dimension)
 
 	for x := 1; x <= generations; x++ {
 		fmt.Printf("Generation #%v\n", x)
