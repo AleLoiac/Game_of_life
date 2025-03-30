@@ -68,6 +68,25 @@ func countAlive(universe [][]int) int {
 	return count
 }
 
+func nextGeneration(current [][]int) [][]int {
+	next := make([][]int, dimension)
+	for i := range next {
+		next[i] = make([]int, dimension)
+		for j := range next[i] {
+			neighbors := countNeighbors(current, i, j)
+			if current[i][j] == 1 {
+				next[i][j] = 1
+				if neighbors < 2 || neighbors > 3 {
+					next[i][j] = 0 // Underpopulation or overpopulation
+				}
+			} else if neighbors == 3 {
+				next[i][j] = 1 // Reproduction
+			}
+		}
+	}
+	return next
+}
+
 func main() {
 
 	fmt.Println("Insert dimension of the universe:")
